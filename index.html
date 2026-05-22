@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Victor Mwangi">
+    <title>Lenana SIS Dashboard</title>
+    <style>
+        /* Base styles and reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #333; 
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            background-color: #1a365d;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .top-nav h2 { font-size: 1.5rem; letter-spacing: 0.5px; margin: 0; }
+        .user-profile { font-size: 0.9rem; opacity: 0.8; }
+
+        /* Auth Panel (The Gateway) */
+        .auth-panel {
+            max-width: 400px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 4px solid #3182ce;
+        }
+        .auth-panel h3 { margin-bottom: 15px; color: #2d3748; }
+        .auth-panel p { color: #718096; margin-bottom: 25px; font-size: 0.95rem; line-height: 1.5; }
+
+        /* Main Dashboard Layout (Hidden by default) */
+        .dashboard-wrapper {
+            display: none; /* Hidden until button is clicked */
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Left Panel: Form */
+        .entry-panel {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        .entry-panel h3 { margin-bottom: 15px; color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; color: #4a5568; }
+        .input-group input { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #cbd5e0; 
+            border-radius: 5px; 
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus { outline: none; border-color: #3182ce; }
+        
+        .btn-submit {
+            width: 100%;
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-submit:hover { background-color: #2b6cb0; }
+
+        /* Right Panel: Table */
+        .data-panel {
+            flex: 2;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #edf2f7; }
+        th { background-color: #f8fafc; color: #4a5568; font-size: 0.85rem; text-transform: uppercase; }
+        tr:hover { background-color: #f7fafc; }
+        
+        .adm-badge { background: #ebf8ff; color: #2b6cb0; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; }
+
+        /* Responsive stack for smaller screens */
+        @media (max-width: 768px) {
+            .dashboard-wrapper { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-nav">
+        <h2>Lenana SIS</h2>
+        <div class="user-profile">Administrator Console</div>
+    </header>
+
+    <div id="auth-gate" class="auth-panel">
+        <h3>Staff Authentication</h3>
+        <p>Welcome to the Lenana School Student Information System. Please confirm your staff status to access the database.</p>
+        <button class="btn-submit" onclick="grantAccess()">Access Dashboard</button>
+    </div>
+
+    <div id="main-dashboard" class="dashboard-wrapper">
+        
+        <div class="entry-panel">
+            <h3>New Student Registration</h3>
+            <div class="input-group">
+                <label>Admission Number</label>
+                <input type="text" id="studentId" placeholder="e.g., ADM-1050" required>
+            </div>
+            <div class="input-group">
+                <label>Full Legal Name</label>
+                <input type="text" id="studentName" placeholder="Enter name" required>
+            </div>
+            <div class="input-group">
+                <label>Assigned Class</label>
+                <input type="text" id="studentClass" placeholder="e.g., Form 1" required>
+            </div>
+            <button class="btn-submit" onclick="registerStudent()">Save Record</button>
+        </div>
+
+        <div class="data-panel">
+            <h3 style="margin-bottom: 15px; color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Current Roster</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Adm No</th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>System Date</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <script>
+        console.log("System initialized. Awaiting staff access.");
+
+        // Unlock the dashboard when button is clicked
+        function grantAccess() {
+            // hide the auth panel
+            document.getElementById('auth-gate').style.display = 'none';
+            // show the dashboard (using flex to maintain the side-by-side layout)
+            document.getElementById('main-dashboard').style.display = 'flex';
+            // fetch the data only AFTER they click access
+            loadRecords();
+        }
+
+        // get all students from the db
+        async function loadRecords() {
+            try {
+                let res = await fetch('api.php');
+                let result = await res.json();
+                
+                let tbody = document.getElementById('dataTableBody');
+                tbody.innerHTML = ''; 
+
+                if (result.status === "success") {
+                    result.data.forEach(item => {
+                        let d = new Date(item.enrollment_date).toLocaleDateString();
+                        
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><span class="adm-badge">${item.admission_number}</span></td>
+                                <td style="font-weight: 500;">${item.full_name}</td>
+                                <td>${item.class_name}</td>
+                                <td style="color: #a0aec0; font-size: 0.9rem;">${d}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to load records", error);
+            }
+        }
+
+        // save new student to db
+        async function registerStudent() {
+            let sId = document.getElementById('studentId').value;
+            let sName = document.getElementById('studentName').value;
+            let sClass = document.getElementById('studentClass').value;
+
+            if(sId === "" || sName === "" || sClass === "") {
+                alert("Please fill all fields before saving.");
+                return;
+            }
+
+            let payload = {
+                adm_no: sId,
+                name: sName,
+                class_name: sClass
+            };
+
+            let res = await fetch('api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            let responseData = await res.json();
+            
+            if (responseData.status === "success") {
+                document.getElementById('studentId').value = '';
+                document.getElementById('studentName').value = '';
+                document.getElementById('studentClass').value = '';
+                
+                loadRecords();
+            } else {
+                alert(responseData.message); 
+            }
+        }
+    </script>
+
+</body>
+</html>
