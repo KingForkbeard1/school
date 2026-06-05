@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Low-Fidelity Wireframe Prototype</title>
+<style>
+    /* Base Wireframe Styles */
+    * {
+        box-sizing: border-box;
+        /* Marker/handwritten style fonts to simulate a draft design */
+        font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", sans-serif;
+        color: #000;
+    }
+    body {
+        margin: 0;
+        display: flex;
+        height: 100vh;
+        background-color: #fff;
+    }
+
+    /* Layout Containers */
+    .sidebar {
+        width: 250px;
+        border-right: 2px solid #000;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        background-color: #f9f9f9;
+    }
+    .workspace {
+        flex: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow-y: auto;
+    }
+    .header {
+        text-align: right;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #000;
+        font-weight: bold;
+    }
+    .row {
+        display: flex;
+        gap: 20px;
+    }
+    .col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* UI Elements */
+    .box {
+        border: 2px solid #000;
+        padding: 15px;
+        background-color: #fff;
+    }
+    .logo {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 40px;
+        padding: 20px 5px;
+        border: 2px dashed #000;
+        background-color: #eee;
+    }
+    .nav-btn {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #eee;
+        cursor: default;
+    }
+    .nav-btn.active {
+        background-color: #ccc;
+        border-width: 3px;
+    }
+    .stat-card {
+        border: 2px solid #000;
+        padding: 25px;
+        flex: 1;
+        text-align: center;
+        font-size: 18px;
+        background-color: #f0f0f0;
+    }
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .input-field {
+        border: 2px dashed #000;
+        padding: 10px;
+        background-color: #f9f9f9;
+        color: #666;
+    }
+    .submit-btn {
+        border: 2px solid #000;
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #ddd;
+        margin-top: 10px;
+    }
+
+    /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    th, td {
+        border: 2px solid #000;
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #eee;
+    }
+    .search-box {
+        border: 2px dashed #000;
+        padding: 8px;
+        width: 200px;
+        display: inline-block;
+        float: right;
+        font-size: 14px;
+        color: #666;
+    }
+</style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">[ Kingforkbeard Academy ]</div>
+        <div class="nav-btn active">[ Dashboard ]</div>
+        <div class="nav-btn">[ Settings ]</div>
+        <div class="nav-btn">[ Logout ]</div>
+    </div>
+
+    <div class="workspace">
+        <div class="header">[ Admin Profile ]</div>
+
+        <div class="row">
+            <div class="stat-card">
+                <strong>[ Total Enrollment ]</strong><br><br>
+                ---
+            </div>
+            <div class="stat-card">
+                <strong>[ Active Classes ]</strong><br><br>
+                ---
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col box">
+                <h3>[ Enroll Student Module ]</h3>
+                <div class="input-group">
+                    <label>Admission No.</label>
+                    <div class="input-field">ADM-XXXX...</div>
+                </div>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <div class="input-field">Text Input...</div>
+                </div>
+                <div class="input-group">
+                    <label>Assigned Class</label>
+                    <div class="input-field">Text Input...</div>
+                </div>
+                <div class="submit-btn">[ Process Enrollment ]</div>
+            </div>
+
+            <div class="col box" style="flex: 2;">
+                <h3>
+                    [ Master Roster ]
+                    <div class="search-box">Search...</div>
+                </h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Adm No</th>
+                            <th>Student Name</th>
+                            <th>Class</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>---</td>
+                            <td>---</td>
+                            <td>---</td>
+                            <td>[ Btn ]</td>
+                        </tr>
+                        <tr>
+                            <td>---</td>
+                            <td>---</td>
+                            <td>---</td>
+                            <td>[ Btn ]</td>
+                        </tr>
+                        <tr>
+                            <td>---</td>
+                            <td>---</td>
+                            <td>---</td>
+                            <td>[ Btn ]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

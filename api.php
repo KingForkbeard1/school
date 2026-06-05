@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-// 1. Strict DSN Connection
+
 $dsn = "mysql:host=127.0.0.1;dbname=testdb;charset=utf8mb4";
 try {
     $pdo = new PDO($dsn, "root", "");
@@ -14,12 +14,12 @@ try {
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-// 2. Handle POST requests (Login, Add Student, OR Update Password)
+
 if ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
     $action = $input['action'] ?? '';
 
-    // -- LOGIN LOGIC --
+    
     if ($action === 'login') {
         $user = htmlspecialchars($input['username'] ?? '');
         $pass = htmlspecialchars($input['password'] ?? '');
@@ -36,18 +36,18 @@ if ($method === 'POST') {
         exit;
     }
 
-    // -- UPDATE PASSWORD LOGIC --
+    
     if ($action === 'update_password') {
         $user = htmlspecialchars($input['username'] ?? '');
         $currentPass = htmlspecialchars($input['current_password'] ?? '');
         $newPass = htmlspecialchars($input['new_password'] ?? '');
 
-        // First, verify the current password is correct
+        
         $stmt = $pdo->prepare("SELECT * FROM teachers WHERE username = :user AND password = :pass");
         $stmt->execute(['user' => $user, 'pass' => $currentPass]);
 
         if ($stmt->rowCount() > 0) {
-            // If correct, update to the new password
+            
             $updateStmt = $pdo->prepare("UPDATE teachers SET password = :newPass WHERE username = :user");
             $updateStmt->execute(['newPass' => $newPass, 'user' => $user]);
             echo json_encode(["status" => "success", "message" => "Password updated securely."]);
@@ -58,7 +58,7 @@ if ($method === 'POST') {
         exit;
     }
 
-    // -- ADD STUDENT LOGIC --
+    
     if ($action === 'admit') {
         $admNo = htmlspecialchars($input['adm_no'] ?? '');
         $name = htmlspecialchars($input['name'] ?? '');
@@ -80,12 +80,12 @@ if ($method === 'POST') {
         exit;
     }
 } 
-// 3. Handle View Roster (GET)
+
 else if ($method === 'GET') {
     $stmt = $pdo->query("SELECT * FROM students ORDER BY id DESC");
     echo json_encode(["status" => "success", "data" => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
 }
-// 4. Handle Delete Student (DELETE)
+
 else if ($method === 'DELETE') {
     $input = json_decode(file_get_contents('php://input'), true);
     $admNo = htmlspecialchars($input['adm_no'] ?? '');
