@@ -6,13 +6,11 @@
     <meta name="author" content="Victor Mwangi">
     <title>Kingforkbeard Academy of Chess SIS</title>
     <style>
-        /* Base and Reset */
+       
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: #f4f7f6; color: #333; overflow: hidden; height: 100vh; }
 
-        /* =========================================
-           LOGIN SCREEN STYLES (SPLIT LAYOUT)
-           ========================================= */
+       
         #login-view { display: flex; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 2000; background: white; transition: opacity 0.5s ease; }
         
         .login-branding { flex: 1; background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%); color: white; display: flex; flex-direction: column; justify-content: center; padding: 60px; position: relative; overflow: hidden; }
@@ -44,9 +42,7 @@
 
         @media (max-width: 768px) { #login-view { flex-direction: column; } .login-branding { flex: none; padding: 40px 20px; text-align: center; align-items: center; } .login-branding p { display: none; } .login-box { box-shadow: none; padding: 30px 20px; } }
 
-        /* =========================================
-           DASHBOARD STYLES
-           ========================================= */
+       
         #dashboard-view { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: opacity 0.5s ease; }
         
         .sidebar { width: 250px; background-color: #1a365d; color: white; display: flex; flex-direction: column; height: 100vh; position: fixed; }
@@ -100,9 +96,7 @@
 </head>
 <body>
 
-    <!-- ==========================================
-         VIEW 1: ENTERPRISE LOGIN SCREEN
-         ========================================== -->
+    
     <div id="login-view">
         <div class="login-branding">
             <h1>Kingforkbeard Academy of Chess</h1>
@@ -129,9 +123,7 @@
         </div>
     </div>
 
-    <!-- ==========================================
-         VIEW 2: ADVANCED DASHBOARD
-         ========================================== -->
+    
     <div id="dashboard-view">
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -151,7 +143,7 @@
             </div>
 
             <div class="content">
-                <!-- DASHBOARD TAB -->
+              
                 <div id="workspace-dashboard">
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -203,7 +195,7 @@
                     </div>
                 </div>
 
-                <!-- SETTINGS TAB (Hidden by default) -->
+               
                 <div id="workspace-settings" style="display: none;">
                     <div class="panel" style="max-width: 500px;">
                         <h3 class="panel-title">Security Settings</h3>
@@ -237,13 +229,12 @@
         </main>
     </div>
 
-    <!-- Toast Notifications -->
+   
     <div id="toast-container"></div>
 
     <script>
         console.log("System booted. Awaiting auth.");
 
-        // --- PASSWORD STRENGTH LOGIC ---
         function checkStrength() {
             let pwd = document.getElementById('newPwd').value;
             let meterWrapper = document.getElementById('meterWrapper');
@@ -283,7 +274,6 @@
             }
         }
 
-        // --- LOGIN LOGIC ---
         function togglePassword() {
             let pwdInput = document.getElementById('loginPass');
             let toggleText = document.querySelector('.toggle-pwd');
@@ -354,7 +344,6 @@
             location.reload(); 
         }
 
-        // --- TAB SWITCHING LOGIC ---
         function switchTab(tab) {
             document.getElementById('nav-dashboard').classList.remove('active');
             document.getElementById('nav-settings').classList.remove('active');
@@ -370,7 +359,6 @@
             }
         }
 
-        // --- PASSWORD UPDATE LOGIC ---
         async function updatePassword() {
             let current = document.getElementById('currentPwd').value.trim();
             let newPwd = document.getElementById('newPwd').value.trim();
@@ -403,15 +391,13 @@
                 document.getElementById('currentPwd').value = '';
                 document.getElementById('newPwd').value = '';
                 document.getElementById('confirmNewPwd').value = '';
-                
-                // Force logout after password change for extra security
+               
                 setTimeout(() => logout(), 2000); 
             } else {
                 showToast(data.message, "error");
             }
         }
 
-        // --- DASHBOARD LOGIC (CRUD) ---
         function showToast(message, type) {
             let container = document.getElementById('toast-container');
             let toast = document.createElement('div');

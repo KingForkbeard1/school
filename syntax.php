@@ -1,5 +1,4 @@
 <?php
-// PHP Syntax Practice for BIT3208
 $schoolName = "Kingforkbeard Academy of Chess";
 $activeClasses = ["Beginner Tactics", "Advanced Openings", "Endgame Mastery"];
 
